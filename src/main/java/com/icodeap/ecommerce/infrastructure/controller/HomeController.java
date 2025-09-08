@@ -41,7 +41,7 @@ public class HomeController {
         List<Stock> stocks = stockService.getStockByProduct(productService.getProductById(id));
         log.info("Id product: {}", id);
         log.info("stock size: {}", stocks.size());
-        Integer lastBalance = stocks.get(stocks.size()-1).getBalance();
+        Integer lastBalance = stocks.isEmpty() ? 0 : stocks.get(stocks.size()-1).getBalance();
 
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("stock", lastBalance);

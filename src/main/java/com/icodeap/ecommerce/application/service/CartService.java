@@ -18,35 +18,38 @@ public class CartService {
     }
 
     public void addItemCart(Integer quantity, Integer idProduct, String nameProduct, BigDecimal price){
-        ItemCart itemCart = new ItemCart(idProduct, nameProduct, quantity, price);
-        itemCartHashMap.put(itemCart.getIdProduct(), itemCart);
+        ItemCart itemCart = itemCartHashMap.get(idProduct);
+        if (itemCart != null) {
+            itemCart.setQuantity(itemCart.getQuantity() + quantity);
+        } else {
+            itemCart = new ItemCart(idProduct, nameProduct, quantity, price);
+            itemCartHashMap.put(idProduct, itemCart);
+        }
         fillList();
     }
 
-    public  BigDecimal getTotalCart(){
+    public BigDecimal getTotalCart(){
         BigDecimal total = BigDecimal.ZERO;
         for (ItemCart itemCart : itemCarts){
             total = total.add(itemCart.getTotalPriceItem());
         }
         return total;
     }
+
     public void removeItemCart(Integer idProduct){
         itemCartHashMap.remove(idProduct);
         fillList();
     }
 
     public void removeAllItemsCart(){
-        itemCartHashMap.clear();;
+        itemCartHashMap.clear();
         itemCarts.clear();
     }
 
     private void fillList(){
-        itemCarts.clear();
-        itemCartHashMap.forEach(
-                (integer, itemCart)-> itemCarts.add(itemCart)
-
-        );
+        itemCarts = new ArrayList<>(itemCartHashMap.values());
     }
+
     //para mirar por consola
     public List<ItemCart> getItemCarts(){
         return itemCarts;
