@@ -29,4 +29,9 @@ public class UserRepositoryImpl implements UserRepository {
     public User findById(Integer id) {
         return userMapper.toUser(userCrudRepository.findById(id).get());
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userCrudRepository.existsByEmail(email);
+    }
 }
